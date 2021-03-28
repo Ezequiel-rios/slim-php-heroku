@@ -6,8 +6,10 @@ deberá determinar si ese valor se encuentra dentro del siguiente listado de pal
 “Recuperatorio”, “Parcial” y “Programacion”. Los valores de retorno serán:
 1 si la palabra pertenece a algún elemento del listado.
 0 en caso contrario.*/
-$palabra = "Parial";
+$palabra = "Parcial";
 $n = 1;
+
+validar ($palabra, $n);
 
 function validar ($str, $max)
 {
