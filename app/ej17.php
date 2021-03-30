@@ -32,33 +32,107 @@ al atributo precio.
 ● Utilizar el método de clase “MostrarAuto” para mostrar cada los objetos impares (1, 3, 5).
 */
 
-echo "Init";
-
-class Auto
+class Auto 
 {   
-    private $lala = "HOLA";
-
-    /*
     private $_color;
     private $_precio;
     private $_marca;
     private $_fecha;
 
-    public function _construct()
+    public function __construct($c, $p=0.00, $m, $f = "")
     {
-        $this->_color = "verde";
-        $this->_precio = 500000;
-        $this->_marca = "ford falcon";
-        $this->_fecha = 1976;
+        $this->_color = $c;
+        $this->_precio = $p;
+        $this->_marca = $m;
+        $this->_fecha = $f;
 
     }
+        
+    public function AgregarImpuestos ($impuestos){
+      $this->_precio += $impuestos;
+    }
     
-  */  
+    public static function MostrarAuto ($auto){
+      echo $auto->_color, "<br>";
+      echo $auto->_precio, "<br>";
+      echo $auto->_marca, "<br>";
+      echo $auto->_fecha, "<br><br>";
+    }
+    public static function MostrarPrecio ($auto){
+      echo $auto->_precio, "<br>";
+    }
+
+
+    public static function Equals ($auto, $auto2){
+      if($auto->_marca == $auto2->_marca)
+        return true;
+      else
+        return false;
+    }
+
+    public static function Add ($auto, $auto2){
+      if($auto->_marca == $auto2->_marca && $auto->_color == $auto2->_color )
+        return $auto->_precio + $auto2->_precio;
+      else
+        return 0;
+    }
+
+    public function __destruct(){}
+     
+
 }
+/*
+● Utilizar el método de clase “MostrarAuto” para mostrar cada los objetos impares (1, 3, 5).*/
 
-$t = new Auto;
+$autos = array();
 
-var_dump ($t);
+$auto = New Auto("Rojo", 50000, "Ford", "29/03/1994");
+array_push($autos, $auto);
+$auto = New Auto("Azul", 45000, "Ford", "29/03/1992");
+array_push($autos, $auto);
+$auto = New Auto("Negro", 60000, "Fiat", "01/04/2000");
+array_push($autos, $auto);
+$auto = New Auto("Negro", 75000, "Fiat", "01/01/2002");
+array_push($autos, $auto);
+$auto = New Auto("Blanco", 95000, "Chery", "31/12/2007");
+array_push($autos, $auto);
 
+echo "<br>Utilizar el método “AgregarImpuesto” en los últimos tres objetos, agregando $ 1500
+al atributo precio:<br>";
+
+Auto::MostrarPrecio($autos[2]);
+Auto::MostrarPrecio($autos[3]);
+Auto::MostrarPrecio($autos[4]);
+
+$autos[2]->AgregarImpuestos(1500);
+$autos[3]->AgregarImpuestos(1500);
+$autos[4]->AgregarImpuestos(1500);
+
+Auto::MostrarPrecio($autos[2]);
+Auto::MostrarPrecio($autos[3]);
+Auto::MostrarPrecio($autos[4]);
+
+
+echo"<br><br><br>Obtener el importe sumado del primer objeto “Auto” más el segundo y mostrar el resultado obtenido. Se utiliza la funcion Add<br>";
+echo Auto::Add($autos[0], $autos[1]), "<br>";
+
+
+echo"<br><br><br>Comparar el primer “Auto” con el segundo y quinto objeto e informar si son iguales o no. Se utiliza la funcion Equals<br>";
+
+if(Auto::Equals($autos[0], $autos[1]))
+  echo "Son de la misma marca<br>";
+else
+  echo "No son de la misma marca<br>";
+
+if(Auto::Equals($autos[1], $autos[4]))
+  echo "Son de la misma marca<br>";
+else
+  echo "No son de la misma marca<br>";
+
+echo"<br><br><br>Utilizar el método de clase “MostrarAuto” para mostrar cada los objetos impares (1, 3, 5)<br>";
+
+Auto::MostrarAuto($autos[0]);
+Auto::MostrarAuto($autos[2]);
+Auto::MostrarAuto($autos[4]);
 
 ?>
