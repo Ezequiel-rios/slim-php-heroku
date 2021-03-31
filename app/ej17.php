@@ -52,7 +52,7 @@ class Auto
       $this->_precio += $impuestos;
     }
     
-    public static function MostrarAuto ($auto){
+    static function MostrarAuto ($auto){
       echo $auto->_color, "<br>";
       echo $auto->_precio, "<br>";
       echo $auto->_marca, "<br>";
