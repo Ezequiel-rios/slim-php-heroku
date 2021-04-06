@@ -4,8 +4,8 @@
         public $usuario;
         public $clave;
         public $mail;
-        
-        public static function ValidarUsuario (Usuario $user)
+
+        public static function ValidarUsuario (Usuarios $user)
         {
             
             if (isset($user->usuario) && isset($user->clave) && isset($user->mail))
@@ -19,12 +19,12 @@
             }
         }
 
-        public static function CargarUsuario (Usuario $user)
+        public static function CargarUsuario (Usuarios $user)
         {
             if (isset($user->usuario) && isset($user->clave) && isset($user->mail))
             {
                 $miarchivo = fopen("usuarios.csv", "a");
-                fwrite ($miarchivo, "$user->usuario,$user->clave,$user->mail \n");
+                fwrite ($miarchivo, "$user->usuario, $user->clave, $user->mail \n");
                 fclose($miarchivo);
             }
             else
@@ -55,6 +55,36 @@
            $str .= "</ul>";
            fclose($miarchivo);
            return $str;
+
         }
+
+        public function VerificarLogin($user)
+        {
+            $validacion = null;
+            $miarchivo = fopen("usuarios.csv", "r");
+
+            while (!feof($miarchivo))
+            {
+                $aux = fgetcsv($miarchivo, 10000, $delimiter = ",");
+              
+                if ($aux && $aux[0] == $user->usuario)
+                {
+                    if ($aux[1] == $user->clave )
+                        $validacion="User y pass correctos";
+                    else
+                        $validacion="Contraseña incorrecta";
+                }
+            }
+            fclose($miarchivo);
+
+            if ($validacion == null)
+                $validacion = "El usuario no existe";
+            
+            return $validacion;
+            
+
+        }
+
+
     }
 ?>

@@ -7,7 +7,7 @@ if (isset($_GET['lista']))
     {
         case "usuarios":
 
-            echo Usuarios::Listar($_GET['lista']);
+            echo Usuario::Listar("usuarios");
             break;
 
         case "productos":

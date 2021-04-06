@@ -32,30 +32,5 @@
                 echo "faltan datos";
             }
         }
-
-        public static function Listar($lista)
-        {
-           $miarchivo = fopen("$lista.csv", "r");
-           $ar = array();
-           $aux;
-
-           while (!feof($miarchivo))
-           {
-               $aux = fgets($miarchivo);
-               if ($aux)
-               array_push($ar, $aux);
-           }
-            $str = "<ul>";
-
-           for ($i = 0; $i < count($ar); $i++)
-           {
-               $str .= "<li> $ar[$i] </li>";
-           }
-
-           $str .= "</ul>";
-           fclose($miarchivo);
-           return $str;
-
-        }
     }
 ?>
