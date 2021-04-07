@@ -26,6 +26,7 @@
                 $miarchivo = fopen("usuarios.csv", "a");
                 fwrite ($miarchivo, "$user->usuario,$user->clave,$user->mail \n");
                 fclose($miarchivo);
+                echo "Usuario agregado con exito";
             }
             else
             {
