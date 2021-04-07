@@ -23,7 +23,7 @@
         {
             if (isset($user->usuario) && isset($user->clave) && isset($user->mail))
             {
-                $miarchivo = fopen("usuarios.csv", "a");
+                $miarchivo = fopen("usuarios.csv", "w");
                 fwrite ($miarchivo, "$user->usuario,$user->clave,$user->mail \n");
                 fclose($miarchivo);
                 echo "Usuario agregado con exito";

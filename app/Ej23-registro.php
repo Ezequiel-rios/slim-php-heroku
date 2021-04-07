@@ -1,5 +1,5 @@
 <?php
-include "Ej20-usuario.php";
+include "Ej23-usuario.php";
 
 
 if (isset($_POST["usuario"]) && isset($_POST["clave"]) && isset($_POST["mail"]))
@@ -10,7 +10,7 @@ if (isset($_POST["usuario"]) && isset($_POST["clave"]) && isset($_POST["mail"]))
     $nuevoUsuario->mail = $_POST["mail"];
 
 
-    Usuario::CargarUsuario($nuevoUsuario); 
+//    Usuario::CargarUsuario($nuevoUsuario); 
 }
 else
     echo "Datos incompletos. No se guarda informacion de usuario";
