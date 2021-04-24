@@ -109,9 +109,7 @@
                 $miarchivo = fopen("usuarios.json", "a");
                 fwrite($miarchivo, json_encode($user)."\n");
                 fclose($miarchivo);
-                $ruta = $_FILES['foto']['name'];
-                //$ext = pathinfo($ruta, PATHINFO_EXTENSION);
-                $destino = "usuario/fotos/".$user->id;
+                $destino = "usuario/fotos/".$user->id.".png";
                 move_uploaded_file($_FILES["foto"]["tmp_name"], $destino);
                 return true;
             }
@@ -144,7 +142,7 @@
            $str = "<ul>";
            
            for ($i = 0; $i < count($arUsers); $i++){
-                $auxfoto = "<img src='usuario/fotos/".$arUsers[$i]->id."' height='200'>";
+                $auxfoto = "<img src='usuario/fotos/".$arUsers[$i]->id.".png' height='200'>";
                 $str .= "<li>".$arUsers[$i]->usuario.",".$arUsers[$i]->clave." ".$auxfoto."</li>";
 
             }
@@ -154,7 +152,7 @@
 
         }
 
-        
+
 
         public static function CargarUsuarioSQL ()
         {
