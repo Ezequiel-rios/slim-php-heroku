@@ -1,0 +1,171 @@
+PERSONAS
+
+INSERT INTO `personas`(`Nombre`, `apellido`, `clave`, `email`, `fecha_de_aregistro`, `localidad`) VALUES
+('Mariano','Kautor','123456','dkantor0@example.com','2021-07-01','Quilmes'),
+('German','Gerram','123456','ggerram1@hud.gov','2020-08-05','Berazategui'),
+('Deloris','Fosis','123456','bsharpe2@wisc.edu','2020-11-28','Avellaneda'),
+('Brok','Neiner','123456','bblazic3@desdev.cn','2020-08-12','Quilmes'),
+('Garrick','Brent','123456','gbrent4@theguardian.com','2020-12-17','Moron'),
+('Bili','Baus','123456','bhoff5@addthis.com','2020-11-27','Moreno')
+
+
+
+productos
+
+INSERT INTO `producto`(`cod_de_barra`, `nombre`, `tipo`, `stock`, `precio`, `fecha_de_creacion`, `fecha_de_modificacion`) VALUES 
+('77900361','Westmacott','liquido','33','15.87','2021-09-02','2020-09-26'),
+('77900362',"Spirit",'solido','45',"69.74",'2020-09-18','2020-04-14'),
+('77900363','Newgrosh','polvo','14','68.19','2020-11-29','2021-11-01'),
+('77900364','McNickle','polvo','19','53.51','2020-11-28','2020-04-17'),
+('77900365','Hudd','solido','68','26.56','2020-12-19', '2020-06-19'),
+('77900366','Schrader','polvo','17','96.54','2020-02-08','2020-04-18'),
+('77900367','Bachellier','solido','59','69.17','2021-01-30','2020-07-06'),
+('77900368','Fleming','solido','38','66.77','2020-10-26','2020-03-10'),
+('77900369','Hurry','solido','44','43.01','2020-04-07','2020-05-30'),
+('77900310','Krauss','polvo','73','35.73','2021-03-03','2020-08-30')
+
+
+ventas
+
+INSERT INTO `ventas`(`id_producto`, `id_usuario`, `cantidad`, `fecha_de_venta`) VALUES 
+('1','7','2','2020-07-19'),
+('8','8','3','2020-08-16'),
+('7','8','4','2021-01-24'),
+('6','9','5','2021-01-14'),
+('3','10','6','2021-03-20'),
+('5','11','7','2021-02-22'),
+('3','10','6','2020-12-02'),
+('3','12','6','2020-06-10'),
+('2','12','6','2021-02-04'),
+('1','12','1','2020-05-17')
+
+
+1. Obtener los detalles completos de todos los usuarios, ordenados alfabéticamente.
+2. Obtener los detalles completos de todos los productos líquidos.
+3. Obtener todas las compras en los cuales la cantidad esté entre 6 y 10 inclusive.
+4. Obtener la cantidad total de todos los productos vendidos.
+5. Mostrar los primeros 3 números de productos que se han enviado.
+6. Mostrar los nombres del usuario y los nombres de los productos de cada venta.
+7. Indicar el monto (cantidad * precio) por cada una de las ventas.
+8. Obtener la cantidad total del producto 1003 vendido por el usuario 104.
+9. Obtener todos los números de los productos vendidos por algún usuario de ‘Avellaneda’.
+10.Obtener los datos completos de los usuarios cuyos nombres contengan la letra ‘u’.
+11. Traer las ventas entre junio del 2020 y febrero 2021.
+12. Obtener los usuarios registrados antes del 2021.
+13.Agregar el producto llamado ‘Chocolate’, de tipo Sólido y con un precio de 25,35.
+14.Insertar un nuevo usuario .
+15.Cambiar los precios de los productos de tipo sólido a 66,60.
+16.Cambiar el stock a 0 de todos los productos cuyas cantidades de stock sean menores
+a 20 inclusive.
+17.Eliminar el producto número 1010.
+18.Eliminar a todos los usuarios que no han vendido productos.
+
+1-
+Select *
+FROM personas
+order by nombre
+
+2-
+SELECT	*
+From	producto
+WHERE	tipo = 'liquido'
+
+3-
+Select 	*
+FROM	ventas
+WHERE	cantidad BETWEEN 6 and 10
+
+4-
+Select sum(cantidad)
+FROM	ventas
+
+5-
+Select id_producto
+FROM	ventas
+order by fecha_de_venta
+LIMIT	0,3
+
+6-
+Select 		b.Nombre, c.nombre
+FROM		ventas as a  
+inner JOIN	personas as b
+ON			a.id_usuario = b.ID
+inner JOIN	producto as c 
+ON			a.id_producto = c.id
+
+7-
+SELECT		a.cantidad * b.precio
+FROM		ventas as a 
+Inner join	producto as b 
+ON			a.id_producto = b.id
+
+8-
+Select SUM(cantidad) 		
+FROM		ventas
+WHERE		id_producto = 1
+AND			id_usuario = 10
+
+9-
+Select 		c.id
+FROM		ventas as a  
+inner JOIN	personas as b
+ON			a.id_usuario = b.ID
+inner JOIN	producto as c 
+ON			a.id_producto = c.id
+WHERE		b.localidad = 'avellaneda'
+
+10-
+Select nombre
+FROM personas
+WHERE	nombre like '%u%'
+
+11-
+Select		*
+FROM		ventas	
+WHERE		fecha_de_venta BETWEEN '2020-06-01' and '2021-02-28'
+
+12-
+Select  *
+from    personas
+WHERE   fecha_de_aregistro < '2021-01-01'
+
+13-
+INSERT INTO `producto`(`nombre`, `tipo`, `precio`) VALUES 
+('Chocolate','solido','25.35'),
+
+14-
+INSERT INTO `personas`(`Nombre`, `apellido`, `clave`, `email`, `fecha_de_aregistro`, `localidad`) VALUES
+('Ezequiel','Rios','123456','eze0@example.com','2021-04-14','Gerli')
+
+
+15-
+Update  producto 
+SET  	precio = '66.60'
+WHERE   tipo = 'solido'
+
+
+16
+Update  producto 
+SET  	stock = '0'
+WHERE   stock <= '20'
+
+
+17-
+DELETE FROM `producto` 
+WHERE id = '10'
+
+
+18-
+Delete from		personas
+WHERE			id not in 
+				(select DISTINCT id_usuario
+				from ventas)
+
+
+
+DELETE FROM usuario 
+WHERE 		id = (SELECT DISTINCT usuario.id FROM usuario JOIN venta WHERE NOT usuario.nombre 
+			IN (SELECT DISTINCT usuario.nombre FROM usuario JOIN venta WHERE usuario.id = venta.id_usuario));
+
+
+			
