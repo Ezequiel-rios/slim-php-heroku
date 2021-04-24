@@ -14,7 +14,6 @@ retorna si se pudo agregar o no.
 Cada usuario se agrega en un renglón diferente al anterior.
 Hacer los métodos necesarios en la clase usuario.
 */
-
 include "usuario.php";
 
 if (isset($_POST["usuario"]) && isset($_POST["clave"]) && isset($_POST["mail"]) )
@@ -33,4 +32,5 @@ if (isset($_POST["usuario"]) && isset($_POST["clave"]) && isset($_POST["mail"]) 
 else
     echo "Datos incompletos. No se guarda informacion de usuario";
 
+    
 ?>
