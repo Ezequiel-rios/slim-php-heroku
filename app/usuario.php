@@ -138,12 +138,17 @@
                }
            }
            fclose($miarchivo);
-           $auxfoto = "";           
+           
            $str = "<ul>";
            
            for ($i = 0; $i < count($arUsers); $i++){
-                $auxfoto = "<img src='usuario/fotos/".$arUsers[$i]->id.".png' height='200'>";
-                $str .= "<li>".$arUsers[$i]->usuario.",".$arUsers[$i]->clave." ".$auxfoto."</li>";
+                $path = "usuario/fotos/".$arUsers[$i]->id.".png";
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                $img = "<img height='100' src= '".$base64."' />";
+
+                $str .= "<li>".$arUsers[$i]->usuario.",".$arUsers[$i]->clave." ".$img."</li>";
 
             }
            $str .= "</ul>";
