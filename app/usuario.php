@@ -13,11 +13,14 @@
 
 
 
-        public function __construct($u="", $a="", $c="", $m="",$l=""){
+        public function __construct($u="", $c="", $m="", $a="", $l="", $id=""){
             $this->usuario = $u;
             $this->clave = $c;
             $this->mail = $m;
-            $this->id = rand();
+            if ($id == "")
+                $this->id = rand();         //este dato es un poco conflictivo con la parte de base de datos
+            else
+                $this->id = $id;         
             $this->fechaRegistro = date("d.m.y");
             $this->apellido = $a;
             $this->localidad = $l;
@@ -132,24 +135,26 @@
                if ($auxString)
                {
                 $auxDeco = json_decode($auxString);
-                $auxUser = new Usuario($auxDeco->usuario,$auxDeco->clave,$auxDeco->mail);
+                $auxUser = new Usuario($auxDeco->usuario,$auxDeco->clave,$auxDeco->mail,null,null,$auxDeco->id);
                 array_push($arUsers, $auxUser); 
                }
            }
            fclose($miarchivo);
+           $auxfoto = "";           
            $str = "<ul>";
+           
            for ($i = 0; $i < count($arUsers); $i++){
-               $str .= "<li>".$arUsers[$i]->usuario.",".$arUsers[$i]->clave."</li>";
+                $auxfoto = "<img src='usuario/fotos/".$arUsers[$i]->id."' height='200'>";
+                $str .= "<li>".$arUsers[$i]->usuario.",".$arUsers[$i]->clave." ".$auxfoto."</li>";
+
             }
            $str .= "</ul>";
-           
-           //$str = "<img src='test.jpg'>";
-           
-
 
            return $str;
 
         }
+
+        
 
         public static function CargarUsuarioSQL ()
         {
@@ -158,12 +163,6 @@
 			$consulta->execute();
 			return $objetoAccesoDato->RetornarUltimoIdInsertado();
 		 }
-                    
-
-
-
-
-
 
     }
 

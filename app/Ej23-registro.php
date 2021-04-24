@@ -16,8 +16,9 @@ Hacer los métodos necesarios en la clase usuario.
 */
 include "usuario.php";
 
-if (isset($_POST["usuario"]) && isset($_POST["clave"]) && isset($_POST["mail"]) )
-{
+//chequeo que los los datos esten seteados y no sean vacios
+if (isset($_POST["usuario"]) && isset($_POST["clave"]) && isset($_POST["mail"]) && isset($_FILES["foto"]) && $_POST["usuario"] != "" && $_POST["clave"] != "" && $_POST["mail"] != "" && $_FILES["foto"]["name"] != "")
+{    
     $nuevoUsuario = new Usuario($_POST["usuario"],$_POST["clave"],$_POST["mail"]);
   
     $bool = Usuario::CargarUsuarioJSON($nuevoUsuario);
@@ -32,5 +33,5 @@ if (isset($_POST["usuario"]) && isset($_POST["clave"]) && isset($_POST["mail"]) 
 else
     echo "Datos incompletos. No se guarda informacion de usuario";
 
-    
+
 ?>
