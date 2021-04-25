@@ -12,12 +12,15 @@ retorna si se pudo agregar o no.
 
 include "usuario.php";
 
-if (isset($_POST["usuario"]) && isset($_POST["apellido"]) && isset($_POST["clave"]) && isset($_POST["mail"]) && isset($_POST["localidad"]) )
+$arPost = ["usuario","apellido","clave","mail","localidad"];
+
+if (ValidarPost($arPost))
 {
     $nuevoUsuario = new Usuario($_POST["usuario"],$_POST["apellido"],$_POST["clave"],$_POST["mail"],$_POST["localidad"]); 
     
     var_dump($nuevoUsuario);
-    Usuario::CargarUsuarioSQL($nuevoUsuario);
+    
+/*    Usuario::CargarUsuarioSQL($nuevoUsuario);
   
     $bool = true;
     if($bool){
@@ -25,7 +28,7 @@ if (isset($_POST["usuario"]) && isset($_POST["apellido"]) && isset($_POST["clave
     }
     else
         echo ("No se cargo el usuario");
-
+*/
 }
 else
     echo "Datos incompletos. No se guarda informacion de usuario";

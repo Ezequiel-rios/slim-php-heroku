@@ -1,34 +1,37 @@
 <?php
     include 'AccesoDatos.php';
+    
 
     class Usuario
     {
-        public $usuario;
-        public $clave;
-        public $mail;
-        public $id;
-        public $fechaRegistro;
-        public $apellido;
-        public $localidad;
+        public $_usuario;
+        public $_clave;
+        public $_mail;
+        public $_id;
+        public $_fechaRegistro;
+        public $_apellido;
+        public $_localidad;
 
 
 
         public function __construct($u="", $c="", $m="", $a="", $l="", $id=""){
-            $this->usuario = $u;
-            $this->clave = $c;
-            $this->mail = $m;
+            $this->_usuario = $u;
+            $this->_clave = $c;
+            $this->_mail = $m;
+            
             if ($id == "")
-                $this->id = rand();         //este dato es un poco conflictivo con la parte de base de datos
+                $this->_id = rand();         //este dato es un poco conflictivo con la parte de base de datos
             else
-                $this->id = $id;         
-            $this->fechaRegistro = date("d.m.y");
-            $this->apellido = $a;
-            $this->localidad = $l;
+                $this->_id = $id;         
+            
+                $this->_fechaRegistro = date("d.m.y");
+            $this->_apellido = $a;
+            $this->_localidad = $l;
         }
 
         public static function ValidarUsuario (Usuarios $user){
             
-            if (isset($user->usuario) && isset($user->clave) && isset($user->mail))
+            if (isset($user->_usuario) && isset($user->_clave) && isset($user->_mail))
             {
                 return true;
             }
@@ -39,12 +42,11 @@
             }
         }
      
-
         public static function CargarUsuario (Usuarios $user){
-            if (isset($user->usuario) && isset($user->clave) && isset($user->mail))
+            if (isset($user->_usuario) && isset($user->_clave) && isset($user->_mail))
             {
                 $miarchivo = fopen("usuarios.csv", "a");
-                fwrite ($miarchivo, "$user->usuario, $user->clave, $user->mail \n");
+                fwrite ($miarchivo, "$user->_usuario, $user->_clave, $user->_mail \n");
                 fclose($miarchivo);
             }
             else
@@ -85,9 +87,9 @@
             {
                 $aux = fgetcsv($miarchivo, 10000, $delimiter = ",");
               
-                if ($aux && $aux[0] == $user->usuario)
+                if ($aux && $aux[0] == $user->_usuario)
                 {
-                    if ($aux[1] == $user->clave )
+                    if ($aux[1] == $user->_clave )
                         $validacion="User y pass correctos";
                     else
                         $validacion="Contraseña incorrecta";
@@ -104,12 +106,12 @@
         }
         
         public static function CargarUsuarioJSON (Usuario $user){
-            if (isset($user->usuario) && isset($user->clave) && isset($user->mail))
+            if (isset($user->_usuario) && isset($user->_clave) && isset($user->_mail))
             {
                 $miarchivo = fopen("usuarios.json", "a");
                 fwrite($miarchivo, json_encode($user)."\n");
                 fclose($miarchivo);
-                $destino = "usuario/fotos/".$user->id.".png";
+                $destino = "usuario/fotos/".$user->_id.".jpg";
                 move_uploaded_file($_FILES["foto"]["tmp_name"], $destino);
                 return true;
             }
@@ -133,7 +135,7 @@
                if ($auxString)
                {
                 $auxDeco = json_decode($auxString);
-                $auxUser = new Usuario($auxDeco->usuario,$auxDeco->clave,$auxDeco->mail,null,null,$auxDeco->id);
+                $auxUser = new Usuario($auxDeco->_usuario,$auxDeco->_clave,$auxDeco->_mail,null,null,$auxDeco->_id);
                 array_push($arUsers, $auxUser); 
                }
            }
@@ -142,13 +144,13 @@
            $str = "<ul>";
            
            for ($i = 0; $i < count($arUsers); $i++){
-                $path = "usuario/fotos/".$arUsers[$i]->id.".png";
+                $path = "usuario/fotos/".$arUsers[$i]->_id.".jpg";
                 $type = pathinfo($path, PATHINFO_EXTENSION);
                 $data = file_get_contents($path);
                 $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                $img = "<img height='100' src= '".$base64."' />";
+                $img = "<img height='100' src='".$base64."'/>";
 
-                $str .= "<li>".$arUsers[$i]->usuario.",".$arUsers[$i]->clave." ".$img."</li>";
+                $str .= "<li>".$arUsers[$i]->_usuario.",".$arUsers[$i]->_clave." ".$img."</li>";
 
             }
            $str .= "</ul>";

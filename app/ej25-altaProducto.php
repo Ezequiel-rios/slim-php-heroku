@@ -16,27 +16,25 @@ Retorna un :
 “no se pudo hacer“si no se pudo hacer
 Hacer los métodos necesarios en la clase
 */
+require_once "producto.php";
+require_once "funciones.php";
 
-include "producto.php";
+//array de parametros $_POST para validar
+$arPost = ["barras","nombre","tipo","stock","precio"];
 
-if (isset($_POST["barras"]) && isset($_POST["nombre"]) && isset($_POST["tipo"])&& isset($_POST["stock"])&& isset($_POST["precio"]) )
+
+//se valida que todos los parametros post esten completos einicializados
+
+if (ValidarPost($arPost))
 {
-    $nuevoUsuario = new Usuario($_POST["usuario"],$_POST["clave"],$_POST["mail"]);
-  
-    $b = Usuario::CargarUsuarioJSON($nuevoUsuario);
+    $producto = new Producto ($_POST["barras"],$_POST["nombre"],$_POST["tipo"],$_POST["stock"],$_POST["precio"]);
     
-    if($b){
-        $ruta = $_FILES['foto']['name'];
-        $ext = pathinfo($ruta, PATHINFO_EXTENSION);
-        $destino = "usuario/fotos/".$nuevoUsuario->id.".".$ext;
-        move_uploaded_file($_FILES["foto"]["tmp_name"], $destino);
-        echo ("Usuario cargado con exito");
-    }
-    else
-        echo ("No se cargo el usuario");
-
+    $resultado=$producto->IngresarProducto($producto);
+    echo ($resultado);
 }
-else
-    echo "Datos incompletos. No se guarda informacion de usuario";
+else  
+    echo("Faltan datos. No se creo producto");
+
+
 
 ?>

@@ -1,143 +1,59 @@
 <?php
-    class Usuario
+    class Producto
     {
         public $_codBarras;
         public $_nombre;
         public $_tipo;
         public $_stock;
         public $_precio;
+        public $_id;
 
-        //(isset($_POST["barras"]) && isset($_POST["nombre"]) && isset($_POST["tipo"])&& isset($_POST["stock"])&& isset($_POST["precio"]) )
 
-        public function __construct($b, $n, $t, $s, $p)
+        public function __construct($cb, $n, $t, $s, $p, $id=null)
         {
-            $this->usuario = $u;
-            $this->clave = $c;
-            $this->mail = $m;
-            $this->id = rand();
-            $this->fechaRegistro = date("d.m.y");
-    
-        }
-
-        public static function ValidarUsuario (Usuarios $user){
-            
-            if (isset($user->usuario) && isset($user->clave) && isset($user->mail))
-            {
-                return true;
-            }
+            $this->_codBarras = $cb;
+            $this->_nombre = $n;
+            $this->_tipo = $t;
+            $this->_stock = $s;
+            $this->_precio = $p;
+            if ($id == "")
+                $this->id = rand(1,10000);         //este dato es un poco conflictivo con la parte de base de datos
             else
-            {
-                echo "faltan datos";
-                return false;
-            }
-        }
-     
-
-        public static function CargarUsuario (Usuarios $user){
-            if (isset($user->usuario) && isset($user->clave) && isset($user->mail))
-            {
-                $miarchivo = fopen("usuarios.csv", "a");
-                fwrite ($miarchivo, "$user->usuario, $user->clave, $user->mail \n");
-                fclose($miarchivo);
-            }
-            else
-            {
-                echo "faltan datos";
-            }
+                $this->id = $id;  
         }
 
-        public static function Listar($lista){
-           $miarchivo = fopen("$lista.csv", "r");
-           $ar = array();
-           $aux;
+        
+        public static function IngresarProducto ($producto){
 
-           while (!feof($miarchivo))
-           {
-               $aux = fgets($miarchivo);
-               if ($aux)
-               array_push($ar, $aux);
-           }
-            $str = "<ul>";
+            $arProductos = LeerJson("productos.json");
+            $resultado ="";
 
-           for ($i = 0; $i < count($ar); $i++)
-           {
-               $str .= "<li> $ar[$i] </li>";
-           }
+            foreach($arProductos as $key=>$auxProd){
+                if ($producto->_codBarras == $auxProd->_codBarras){
+                    
+                    $arProductos[$key]->_stock += $producto->_stock;
+                    $resultado ="Actualizado";
 
-           $str .= "</ul>";
-           fclose($miarchivo);
-           return $str;
-
-        }
-
-        public function VerificarLogin($user){
-            $validacion = null;
-            $miarchivo = fopen("usuarios.csv", "r");
-
-            while (!feof($miarchivo))
-            {
-                $aux = fgetcsv($miarchivo, 10000, $delimiter = ",");
-              
-                if ($aux && $aux[0] == $user->usuario)
-                {
-                    if ($aux[1] == $user->clave )
-                        $validacion="User y pass correctos";
-                    else
-                        $validacion="Contraseña incorrecta";
                 }
             }
-            fclose($miarchivo);
 
-            if ($validacion == null)
-                $validacion = "El usuario no existe";
-            
-            return $validacion;
-            
-
-        }
-        
-        public static function CargarUsuarioJSON (Usuario $user){
-            if (isset($user->usuario) && isset($user->clave) && isset($user->mail))
-            {
-                $miarchivo = fopen("usuarios.json", "a");
-                fwrite($miarchivo, json_encode($user)."\n");
-                fclose($miarchivo);
-                return true;
+            if($resultado == ""){
+                CargarJson("productos.json", $producto);
+                $resultado = "Ingresado";
+            }
+            elseif($resultado == "Actualizado"){
+                PisarJson("productos.json", $arProductos);
             }
             else
-            {
-                return false;
-            }
+                $resultado = "No se pudo guardar";
+
+            return $resultado;
+            
         }
 
-        public static function ListarJSON($lista){
-           $miarchivo = fopen("$lista.json", "r");
-           $arUsers = array();
-           $auxString;
-           $auxDeco;
-           $auxUser;
 
-           while (!feof($miarchivo))
-           {
-               $auxString = fgets($miarchivo);
-               if ($auxString)
-               {
-                $auxDeco = json_decode($auxString);
-                $auxUser = new Usuario($auxDeco->usuario,$auxDeco->clave,$auxDeco->mail);
-                array_push($arUsers, $auxUser); 
-               }
-           }
-           fclose($miarchivo);
 
-           $str = "<ul>";
-           for ($i = 0; $i < count($arUsers); $i++)
-           {
-               $str .= "<li>".$arUsers[$i]->usuario.",".$arUsers[$i]->clave."</li>";
-           }
-           $str .= "</ul>";
-           return $str;
 
-         }
 
 
 
