@@ -56,7 +56,7 @@
                 $resultado="El usuario no existe en la base de datos";
             } 
 
-            if(!$existeProd)
+            if(!$existeProd && $resultado=="")
                 $resultado = "El producto no se encuentra en nuestra base de datos";
 
             return $resultado;
