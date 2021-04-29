@@ -15,6 +15,7 @@ Cada usuario se agrega en un renglón diferente al anterior.
 Hacer los métodos necesarios en la clase usuario.
 */
 include "usuario.php";
+include "funciones.php";
 
 //chequeo que los los datos esten seteados y no sean vacios
 if (isset($_POST["usuario"]) && isset($_POST["clave"]) && isset($_POST["mail"]) && isset($_FILES["foto"]) && $_POST["usuario"] != "" && $_POST["clave"] != "" && $_POST["mail"] != "" && $_FILES["foto"]["name"] != "")

@@ -10,25 +10,17 @@ guardando los datos la base de datos
 retorna si se pudo agregar o no.
 */
 
-include "usuario.php";
+require_once "usuario.php";
+require_once "funciones.php";
+require_once 'AccesoDatos.php';
 
-$arPost = ["usuario","apellido","clave","mail","localidad"];
+
+$arPost = ["nombre","clavenueva","clavevieja","mail"];
 
 if (ValidarPost($arPost))
 {
-    $nuevoUsuario = new Usuario($_POST["usuario"],$_POST["apellido"],$_POST["clave"],$_POST["mail"],$_POST["localidad"]); 
-    
-    var_dump($nuevoUsuario);
-    
-/*    Usuario::CargarUsuarioSQL($nuevoUsuario);
-  
-    $bool = true;
-    if($bool){
-        echo ("Usuario cargado con exito");
-    }
-    else
-        echo ("No se cargo el usuario");
-*/
+    Usuario::ModificarClave($_POST["nombre"],$_POST["clavenueva"],$_POST["clavevieja"],$_POST["mail"], "clase5"); 
+
 }
 else
     echo "Datos incompletos. No se guarda informacion de usuario";

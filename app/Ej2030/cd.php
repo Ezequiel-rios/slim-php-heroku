@@ -6,6 +6,12 @@ class cd
   	public $cantante;
   	public $año;
 
+	public static function Test (){
+		echo ("aber");		
+
+	}
+
+
   	public function BorrarCd()
 	 {
 
@@ -87,9 +93,9 @@ class cd
 	 
 
 
-  	public static function TraerTodoLosCds()
+  	public static function TraerTodoLosCds($nombreBase)
 	{
-			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso($nombreBase); 
 			$consulta =$objetoAccesoDato->RetornarConsulta("select id,titel as titulo, interpret as cantante,jahr as año from cds");
 			$consulta->execute();			
 			return $consulta->fetchAll(PDO::FETCH_CLASS, "cd");		

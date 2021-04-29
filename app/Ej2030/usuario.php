@@ -1,5 +1,4 @@
 <?php
-    include 'AccesoDatos.php';
     
 
     class Usuario
@@ -18,15 +17,13 @@
             $this->_usuario = $u;
             $this->_clave = $c;
             $this->_mail = $m;
-            
-            if ($id == "")
-                $this->_id = rand();         //este dato es un poco conflictivo con la parte de base de datos
-            else
-                $this->_id = $id;         
-            
-                $this->_fechaRegistro = date("d.m.y");
             $this->_apellido = $a;
             $this->_localidad = $l;
+            $this->_fechaRegistro = date("y.m.d");
+            
+            if($id!="")
+                $this->_id = $id;
+            
         }
 
         public static function ValidarUsuario (Usuarios $user){
@@ -111,8 +108,13 @@
                 $miarchivo = fopen("usuarios.json", "a");
                 fwrite($miarchivo, json_encode($user)."\n");
                 fclose($miarchivo);
-                $destino = "usuario/fotos/".$user->_id.".jpg";
-                move_uploaded_file($_FILES["foto"]["tmp_name"], $destino);
+                
+                $ruta="usuario/fotos/";
+                $nombreFoto="$user->_mail";
+                CargarFoto($ruta,$nombreFoto,"foto");
+
+                /*$destino = "usuario/fotos/".$user->_id.".jpg";
+                move_uploaded_file($_FILES["foto"]["tmp_name"], $destino);*/
                 return true;
             }
             else
@@ -161,13 +163,57 @@
 
 
 
-        public static function CargarUsuarioSQL ()
+        public static function CargarUsuarioBase($usuario, $base)
         {
-   			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-    		$consulta =$objetoAccesoDato->RetornarConsulta("INSERT into cds (titel,interpret,jahr)values('$this->titulo','$this->cantante','$this->año')");
-			$consulta->execute();
-			return $objetoAccesoDato->RetornarUltimoIdInsertado();
-		 }
+			$sql = "INSERT INTO personas(Nombre, apellido, clave, email, fecha_de_aregistro, localidad) VALUES
+                    ('$usuario->_usuario' ,'$usuario->_apellido','$usuario->_clave','$usuario->_mail','$usuario->_fechaRegistro','$usuario->_localidad')";
+
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso($base);
+            $consulta =$objetoAccesoDato->RetornarConsulta($sql);
+            $consulta->execute();
+            return $objetoAccesoDato->RetornarUltimoIdInsertado();
+    	}
+
+
+        public static function Listarbase($nombreBase){
+            $arUsers = array();
+            $auxString;
+            $auxDeco;
+            $auxUser;
+            $str ="";
+
+            $sql = "Select * From Personas";
+
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso($nombreBase); 
+            $consulta =$objetoAccesoDato->RetornarConsulta($sql);
+            $consulta->execute();			
+            $arAssoc = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+            //$str=ArmarListaAssoc($arAssoc);
+            $str=ArmarTablaAssoc($arAssoc, "");
+            return $str;
+
+        }
+ 
+
+        
+        public static function ModificarClave($nombre, $clavenueva, $clavevieja, $mail,$base){
+             $sql = "UPDATE personas 
+                        SET clave = '$clavenueva'
+                      WHERE nombre = '$nombre'
+                        AND email = '$mail'
+                        AND clave = '$clavevieja';";
+
+             echo($sql);
+             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso($base);
+             $consulta =$objetoAccesoDato->RetornarConsulta($sql);
+             $consulta->execute();
+             
+             return "Se modificó su clave";
+         }
+
+
+
 
     }
 

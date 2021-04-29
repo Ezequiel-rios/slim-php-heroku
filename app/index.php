@@ -1,3 +1,4 @@
 <?php
-    echo "Sin el index nada funciona";
+
+echo("esta es la pagina index");
 ?>

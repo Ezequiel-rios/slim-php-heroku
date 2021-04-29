@@ -70,6 +70,53 @@ function LeerJson($nombreArchivo){
 
 }
 
+function ModificarBase(){
+
+}
+
+function ConsultarBase(){
+
+}
+//arma una lista con el array de un fetch assoc
+function ArmarListaAssoc($arAssoc){
+    $str = "<ul>";
+    foreach($arAssoc as $Ar1){
+        $str .= "<li>";
+        foreach($Ar1 as $campo){
+        $str .= "$campo, ";
+        }
+        $str .= "</li>";
+
+    }
+    $str .= "</ul>";
+    return $str;
+
+}
+
+//arma una tabla con el array de un fetch assoc, el encabezado es opcional
+function ArmarTablaAssoc($arAssoc,$encabezado){
+    $str = "<table>";
+    $str .= $encabezado;
+
+    foreach($arAssoc as $Ar1){
+        $str .= "<tr>";
+        foreach($Ar1 as $campo){
+        $str .= "<td>$campo</td>";
+        }
+        $str .= "</tr>";
+
+    }
+    $str .= "</table>";
+    return $str;
+
+}
+
+//recibe una ruta, ID de $_FILES y el nombre de la foto y la carga como JPG
+function CargarFoto($ruta, $nombreFoto, $idFile){
+    $destino = "$ruta"."$nombreFoto".".jpg";
+    move_uploaded_file($_FILES[$idFile]["tmp_name"], $destino);
+    return true;
+}
 
 
 ?>

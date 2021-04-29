@@ -4,10 +4,10 @@ class AccesoDatos
     private static $ObjetoAccesoDatos;
     private $objetoPDO;
  
-    private function __construct()
+    private function __construct($nombreBase)
     {
         try { 
-            $this->objetoPDO = new PDO('mysql:host=localhost;dbname=clase5;charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            $this->objetoPDO = new PDO('mysql:host=localhost;dbname='.$nombreBase.';charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             $this->objetoPDO->exec("SET CHARACTER SET utf8");
             } 
         catch (PDOException $e) { 
@@ -25,10 +25,10 @@ class AccesoDatos
         return $this->objetoPDO->lastInsertId(); 
     }
  
-    public static function dameUnObjetoAcceso()
+    public static function dameUnObjetoAcceso($nombreBase)
     { 
         if (!isset(self::$ObjetoAccesoDatos)) {          
-            self::$ObjetoAccesoDatos = new AccesoDatos(); 
+            self::$ObjetoAccesoDatos = new AccesoDatos($nombreBase); 
         } 
         return self::$ObjetoAccesoDatos;        
     }
